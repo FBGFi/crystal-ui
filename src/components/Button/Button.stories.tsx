@@ -6,7 +6,15 @@ import { Button } from "./Button";
 export default {
   title: "Button",
   component: Button,
-  argTypes: {},
+  argTypes: {
+    content: {
+      name: "content",
+      type: { name: "string", required: true },
+      control: {
+        type: "text",
+      },
+    },
+  },
 } as Meta<typeof Button>;
 
 const Template: Story<any> = (args) => <Button {...args} />;
