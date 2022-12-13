@@ -19,7 +19,9 @@
               "@typescript-eslint/no-unused-vars": ["warn"],
               "prettier/prettier": "error",
               "no-shadow": "off",
-              "no-undef": "off"
+              "no-undef": "off",
+              "react/display-name": "warn",
+              "react/prop-types": "warn"
             }
           }
     ],

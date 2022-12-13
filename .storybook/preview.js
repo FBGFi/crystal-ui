@@ -3,7 +3,7 @@ import { CrystalBaseLine } from "../src";
 
 export const decorators = [
   (Story) => (
-    <CrystalBaseLine theme="dark">
+    <CrystalBaseLine theme="dark" screenHeightBreakPoint={1080}>
       <Story />
     </CrystalBaseLine>
   ),

@@ -3,6 +3,7 @@ import { DefaultStyleProps, ThemeOption } from "../../types/types";
 
 interface ThemeState {
   theme: ThemeOption;
+  screenHeightBreakPoint?: number;
 }
 
 type StateChangeAction = (
@@ -16,6 +17,7 @@ type StateChangePayload = {
 
 const initialState: ThemeState = {
   theme: "dark",
+  screenHeightBreakPoint: undefined,
 };
 
 const reducer = (
@@ -30,25 +32,65 @@ const ThemeContext = React.createContext<{
 
 interface ThemeProviderProps {
   theme: ThemeOption;
+  screenHeightBreakPoint?: number;
 }
 
 const themeActions: { [fName: string]: StateChangeAction } = {
   setTheme: (state, { theme }) => ({ ...state, theme: theme || state.theme }),
+  setScreenHeightBreakPoint: (state, { screenHeightBreakPoint }) => ({
+    ...state,
+    screenHeightBreakPoint,
+  }),
 };
 
 export const ThemeContextProvider: React.FC<
   React.PropsWithChildren & ThemeProviderProps
-> = ({ children, theme }) => {
-  const [state, dispatch] = React.useReducer(reducer, { theme });
+> = ({ children, theme, screenHeightBreakPoint }) => {
+  const [state, dispatch] = React.useReducer(reducer, {
+    theme,
+    screenHeightBreakPoint,
+  });
 
   React.useEffect(() => {
     dispatch({ action: themeActions.setTheme, params: { theme } });
   }, [theme]);
 
+  React.useEffect(() => {
+    dispatch({
+      action: themeActions.setScreenHeightBreakPoint,
+      params: { screenHeightBreakPoint },
+    });
+  }, [screenHeightBreakPoint]);
+
+  const ResponsiveStyles = () => {
+    return (
+      <style>
+        {
+          /* eslint-disable */
+        `
+          :root {
+            font-size: 10px;
+          }
+
+          @media (height > ${state.screenHeightBreakPoint}px) {
+            :root {
+              font-size: calc(100vh / ${state.screenHeightBreakPoint} * 10);
+            }
+          }
+        `
+          /* eslint-enable */
+        }
+      </style>
+    );
+  };
+
   return (
-    <ThemeContext.Provider value={{ state, dispatch }}>
-      {children}
-    </ThemeContext.Provider>
+    <>
+      {screenHeightBreakPoint && <ResponsiveStyles />}
+      <ThemeContext.Provider value={{ state, dispatch }}>
+        {children}
+      </ThemeContext.Provider>
+    </>
   );
 };
 
@@ -62,9 +104,23 @@ export const useTheme = () => {
     dispatch({ action: themeActions.setTheme, params: { theme } });
   };
 
+  const setScreenHeightBreakPoint = (screenHeightBreakPoint: number) => {
+    dispatch({
+      action: themeActions.screenHeightBreakPoint,
+      params: { screenHeightBreakPoint },
+    });
+  };
+
   const getThemeDefaultStyleKeys = (): DefaultStyleProps => ({
     colorVariant: `__${state.theme}`,
+    screenHeightBreakPoint: state.screenHeightBreakPoint,
   });
 
-  return { state, dispatch, setTheme, getThemeDefaultStyleKeys };
+  return {
+    state,
+    dispatch,
+    setTheme,
+    setScreenHeightBreakPoint,
+    getThemeDefaultStyleKeys,
+  };
 };

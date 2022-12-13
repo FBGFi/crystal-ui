@@ -1,16 +1,29 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react";
+import { Story, ComponentMeta } from "@storybook/react";
 
-import { Toggle } from "./Toggle";
+import { Toggle, ToggleProps } from "./Toggle";
 
 export default {
   title: "Toggle",
   component: Toggle,
   argTypes: {},
-} as Meta<typeof Toggle>;
+} as ComponentMeta<typeof Toggle>;
 
-const Template: Story<any> = (args) => <Toggle {...args} />;
+const Template: Story<ToggleProps> = ({ options }) => (
+  <Toggle options={options} />
+);
 
 export const Primary = Template.bind({});
-
-Primary.args = {};
+const primaryArgs: ToggleProps = {
+  options: [
+    {
+      label: "On",
+      option: "on",
+    },
+    {
+      label: "Off",
+      option: "off",
+    },
+  ],
+};
+Primary.args = primaryArgs;

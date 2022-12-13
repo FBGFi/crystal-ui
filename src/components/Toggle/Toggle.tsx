@@ -1,14 +1,22 @@
 import React from "react";
+import { useTheme } from "../../utils/hooks/useTheme";
 import { createDynamicStyles } from "../../utils/utils";
 
-interface ToggleProps {}
+type ToggleOption<T = string> = {
+  label?: string;
+  option: T;
+};
+
+export interface ToggleProps<T = string> {
+  options: [ToggleOption<T>, ToggleOption<T>];
+}
 
 const toggleStyles = createDynamicStyles({
-  __toggle: {
+  __toggle: ({ screenHeightBreakPoint }) => ({
     position: "relative",
     display: "inline-block",
-    width: 60,
-    height: 34,
+    width: screenHeightBreakPoint ? "6rem" : 60,
+    height: screenHeightBreakPoint ? "3.4rem" : 34,
 
     "& input": {
       opacity: 0,
@@ -27,7 +35,7 @@ const toggleStyles = createDynamicStyles({
         transform: "translateX(26px)",
       },
     },
-  },
+  }),
   __toggle__slider: {
     position: "absolute",
     cursor: "pointer",
@@ -51,12 +59,20 @@ const toggleStyles = createDynamicStyles({
   },
 });
 
-export const Toggle: React.FC<ToggleProps> = ({}) => {
-  const styles = toggleStyles();
+export function Toggle<T = string>({ options }: ToggleProps<T>) {
+  const [currentValue, setCurrentValue] = React.useState<1 | 0>(0);
+  const { getThemeDefaultStyleKeys } = useTheme();
+  const styles = toggleStyles(getThemeDefaultStyleKeys());
+
+  const onChange = () => {
+    setCurrentValue(Math.abs(currentValue - 1) as 0 | 1);
+  };
+
   return (
     <label className={styles.__toggle}>
-      <input type="checkbox" />
+      <input type="checkbox" checked={currentValue === 1} onChange={onChange} />
       <span className={styles.__toggle__slider} />
+      <span>{options[currentValue].label}</span>
     </label>
   );
-};
+}

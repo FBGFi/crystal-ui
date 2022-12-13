@@ -5,10 +5,17 @@ import "./__index.scss";
 
 interface CrystalBaseLineProps {
   theme: ThemeOption;
+  screenHeightBreakPoint?: number;
 }
 
 export const CrystalBaseLine: React.FC<
   React.PropsWithChildren & CrystalBaseLineProps
-> = ({ theme = "dark", children }) => {
-  return <ThemeContextProvider theme={theme}>{children}</ThemeContextProvider>;
+> = ({ theme = "dark", children, screenHeightBreakPoint }) => {
+  return (
+    <ThemeContextProvider
+      theme={theme}
+      screenHeightBreakPoint={screenHeightBreakPoint}>
+      {children}
+    </ThemeContextProvider>
+  );
 };

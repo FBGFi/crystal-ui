@@ -6,4 +6,5 @@ export type ThemeOption = "dark" | "light";
 /** Default keys for JSS callback functions */
 export interface DefaultStyleProps {
   colorVariant: ColorVariant;
+  screenHeightBreakPoint?: number;
 }
