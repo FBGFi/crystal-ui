@@ -1,5 +1,7 @@
+import { ThemeOption } from "../../types/types";
+
 /** Color shades */
-export type ColorVariant = "__dark" | "__light";
+export type ColorVariant = `__${ThemeOption}`;
 /** Color */
 export type Color = {
   [variant in ColorVariant]: {
