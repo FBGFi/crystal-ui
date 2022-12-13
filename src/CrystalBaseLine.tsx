@@ -1,6 +1,7 @@
 import React from "react";
 import { ThemeOption } from "./types/types";
 import { ThemeContextProvider } from "./utils/hooks/useTheme";
+import "./__index.scss";
 
 interface CrystalBaseLineProps {
   theme: ThemeOption;

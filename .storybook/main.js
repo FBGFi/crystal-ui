@@ -6,7 +6,15 @@ module.exports = {
   "addons": [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-interactions"
+    "@storybook/addon-interactions",
+    {
+      name: "storybook-addon-sass-postcss",
+      options: {
+        rule: {
+          test: /\.(scss|sass)$/i,
+        },
+      },
+    },
   ],
   "framework": "@storybook/react"
 }
