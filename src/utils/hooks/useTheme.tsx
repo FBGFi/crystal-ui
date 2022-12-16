@@ -1,4 +1,6 @@
 import React from "react";
+import { createUseStyles } from "react-jss";
+import colors from "../../styles/colors";
 import { DefaultStyleProps, ThemeOption } from "../../types/types";
 
 interface ThemeState {
@@ -43,6 +45,15 @@ const themeActions: { [fName: string]: StateChangeAction } = {
   }),
 };
 
+const crystalUiStyles = createUseStyles({
+  crystalUi__dark: {
+    background: `linear-gradient(105deg, ${colors.purple.__dark.__1}, ${colors.orange.__dark.__1})`,
+  },
+  crystalUi__light: {
+    background: `linear-gradient(105deg, #FFF, #000)`,
+  },
+});
+
 export const ThemeContextProvider: React.FC<
   React.PropsWithChildren & ThemeProviderProps
 > = ({ children, theme, screenHeightBreakPoint }) => {
@@ -50,6 +61,7 @@ export const ThemeContextProvider: React.FC<
     theme,
     screenHeightBreakPoint,
   });
+  const styles = crystalUiStyles();
 
   React.useEffect(() => {
     dispatch({ action: themeActions.setTheme, params: { theme } });
@@ -61,6 +73,12 @@ export const ThemeContextProvider: React.FC<
       params: { screenHeightBreakPoint },
     });
   }, [screenHeightBreakPoint]);
+
+  React.useEffect(() => {
+    const oppositeTheme = state.theme === "dark" ? "light" : "dark";
+    document.body.classList.remove(styles[`crystalUi__${oppositeTheme}`]);
+    document.body.classList.add(styles[`crystalUi__${state.theme}`]);
+  }, [state.theme]);
 
   const ResponsiveStyles = () => {
     return (
