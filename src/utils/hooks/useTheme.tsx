@@ -46,11 +46,17 @@ const themeActions: { [fName: string]: StateChangeAction } = {
 };
 
 const crystalUiStyles = createUseStyles({
+  crystalUi__base: {
+    background: `linear-gradient(105deg, #FFF, ${colors.purple.__light.__1}, ${colors.purple.__dark.__1}, ${colors.orange.__dark.__1})`,
+    backgroundSize: "300% 300%",
+    transition: "0.4s",
+    backgroundPosition: "100% 100%",
+  },
   crystalUi__dark: {
-    background: `linear-gradient(105deg, ${colors.purple.__dark.__1}, ${colors.orange.__dark.__1})`,
+    backgroundPosition: "100% 100%",
   },
   crystalUi__light: {
-    background: `linear-gradient(105deg, #FFF, #000)`,
+    backgroundPosition: "0% 0%",
   },
 });
 
@@ -62,6 +68,10 @@ export const ThemeContextProvider: React.FC<
     screenHeightBreakPoint,
   });
   const styles = crystalUiStyles();
+
+  React.useEffect(() => {
+    document.body.classList.add(styles.crystalUi__base);
+  }, []);
 
   React.useEffect(() => {
     dispatch({ action: themeActions.setTheme, params: { theme } });

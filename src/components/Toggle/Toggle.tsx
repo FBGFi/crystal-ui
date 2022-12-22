@@ -9,15 +9,18 @@ type ToggleOption<T = string> = {
 
 export interface ToggleProps<T = string> {
   options: [ToggleOption<T>, ToggleOption<T>];
+  onToggle: (value: T) => void;
 }
 
-export function Toggle<T = string>({ options }: ToggleProps<T>) {
+export function Toggle<T = string>({ options, onToggle }: ToggleProps<T>) {
   const [currentValue, setCurrentValue] = React.useState<1 | 0>(0);
   const { getThemeDefaultStyleKeys } = useTheme();
   const styles = toggleStyles(getThemeDefaultStyleKeys());
 
   const onChange = () => {
-    setCurrentValue(Math.abs(currentValue - 1) as 0 | 1);
+    const newValue = Math.abs(currentValue - 1) as 0 | 1;
+    setCurrentValue(newValue);
+    onToggle(options[newValue].option);
   };
 
   return (

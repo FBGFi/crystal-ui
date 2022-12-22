@@ -9,8 +9,8 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof Toggle>;
 
-const Template: Story<ToggleProps> = ({ options }) => (
-  <Toggle options={options} />
+const Template: Story<ToggleProps> = ({ options, onToggle }) => (
+  <Toggle onToggle={onToggle} options={options} />
 );
 
 export const Primary = Template.bind({});
@@ -25,5 +25,6 @@ const primaryArgs: ToggleProps = {
       option: "off",
     },
   ],
+  onToggle: (value: string) => console.log(value),
 };
 Primary.args = primaryArgs;
