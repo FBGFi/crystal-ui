@@ -1,8 +1,7 @@
 import React from "react";
 import { clsx } from "clsx";
-import colors from "../../styles/colors";
 import { useTheme } from "../../utils/hooks/useTheme";
-import { createDynamicStyles } from "../../utils/utils";
+import { buttonStyles } from "./styles";
 
 interface ButtonProps {
   /** Inner content of the button, string or HTML */
@@ -15,12 +14,6 @@ interface ButtonProps {
   classNames?: string[];
 }
 
-const buttonStyles = createDynamicStyles({
-  __button: {
-    backgroundColor: ({ colorVariant }) => colors.orange[colorVariant]["__1"],
-  },
-});
-
 export const Button: React.FC<ButtonProps> = ({
   content,
   onClick,
@@ -29,7 +22,11 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const { getThemeDefaultStyleKeys } = useTheme();
   const styles = buttonStyles(getThemeDefaultStyleKeys());
-  const componentClassName = clsx([styles.__button, ...classNames]);
+  const componentClassName = clsx([
+    styles.__button,
+    styles.__linear_background__animated,
+    ...classNames,
+  ]);
   return (
     <button onClick={onClick} className={componentClassName} style={style}>
       {content}

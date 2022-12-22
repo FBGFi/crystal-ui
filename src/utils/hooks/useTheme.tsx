@@ -1,7 +1,7 @@
 import React from "react";
-import { createUseStyles } from "react-jss";
 import colors from "../../styles/colors";
 import { DefaultStyleProps, ThemeOption } from "../../types/types";
+import { createDynamicStyles } from "../utils";
 
 interface ThemeState {
   theme: ThemeOption;
@@ -45,18 +45,15 @@ const themeActions: { [fName: string]: StateChangeAction } = {
   }),
 };
 
-const crystalUiStyles = createUseStyles({
+const crystalUiStyles = createDynamicStyles({
   crystalUi__base: {
-    background: `linear-gradient(105deg, #FFF, ${colors.purple.__light.__1}, ${colors.purple.__dark.__1}, ${colors.orange.__dark.__1})`,
-    backgroundSize: "300% 300%",
-    transition: "0.4s",
-    backgroundPosition: "100% 100%",
+    backgroundImage: `linear-gradient(105deg, ${colors.purple.__dark.__1}, ${colors.orange.__dark.__1}, #FFF, ${colors.purple.__light.__1})`,
   },
   crystalUi__dark: {
-    backgroundPosition: "100% 100%",
+    // backgroundPosition: "0% 0%",
   },
   crystalUi__light: {
-    backgroundPosition: "0% 0%",
+    // backgroundPosition: "100% 100%",
   },
 });
 
@@ -71,6 +68,7 @@ export const ThemeContextProvider: React.FC<
 
   React.useEffect(() => {
     document.body.classList.add(styles.crystalUi__base);
+    document.body.classList.add(styles.__linear_background__animated);
   }, []);
 
   React.useEffect(() => {
@@ -85,9 +83,16 @@ export const ThemeContextProvider: React.FC<
   }, [screenHeightBreakPoint]);
 
   React.useEffect(() => {
-    const oppositeTheme = state.theme === "dark" ? "light" : "dark";
-    document.body.classList.remove(styles[`crystalUi__${oppositeTheme}`]);
-    document.body.classList.add(styles[`crystalUi__${state.theme}`]);
+    const animationClass =
+      state.theme === "dark"
+        ? styles.__linear_background__start
+        : styles.__linear_background__end;
+    const oppositeClass =
+      state.theme === "light"
+        ? styles.__linear_background__start
+        : styles.__linear_background__end;
+    document.body.classList.remove(oppositeClass);
+    document.body.classList.add(animationClass);
   }, [state.theme]);
 
   const ResponsiveStyles = () => {
