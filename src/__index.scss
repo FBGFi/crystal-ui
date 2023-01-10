@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
 body {
   margin: 0;
   padding: 0;
@@ -8,4 +12,24 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+[class*="crystal_ui__text"]{
+  font-family: 'Lato', Arial, sans-serif;
+  letter-spacing: 0.12rem;
+  max-width: 75ch;
+  word-break: break-all;
+  text-align: left;
+}
+
+.crystal_ui__text__small {
+  font-size: 1.3rem;
+}
+
+.crystal_ui__text__regular {
+  font-size: 1.5rem;
+}
+
+.crystal_ui__text__large {
+  font-size: 1.8rem;
 }

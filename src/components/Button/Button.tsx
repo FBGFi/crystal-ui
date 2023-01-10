@@ -12,6 +12,8 @@ interface ButtonProps {
   style?: React.CSSProperties;
   /** List of optional classnames for the button */
   classNames?: string[];
+  /** Button size */
+  size?: "regular" | "small" | "large";
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -19,12 +21,14 @@ export const Button: React.FC<ButtonProps> = ({
   onClick,
   style,
   classNames = [],
+  size = "regular",
 }) => {
   const { getThemeDefaultStyleKeys } = useTheme();
   const styles = buttonStyles(getThemeDefaultStyleKeys());
   const componentClassName = clsx([
     styles.__button,
     styles.__linear_background__animated,
+    `crystal_ui__text__${size}`,
     ...classNames,
   ]);
   return (

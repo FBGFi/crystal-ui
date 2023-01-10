@@ -47,13 +47,28 @@ const themeActions: { [fName: string]: StateChangeAction } = {
 
 const crystalUiStyles = createDynamicStyles({
   crystalUi__base: {
-    backgroundImage: `linear-gradient(105deg, ${colors.purple.__dark.__1}, ${colors.orange.__dark.__1}, #FFF, ${colors.purple.__light.__1})`,
+    transition: "0.3s ease-in",
   },
   crystalUi__dark: {
-    // backgroundPosition: "0% 0%",
+    backgroundColor: colors.purple.__dark.__1,
+    '& [class^="fade_in_bg"]': {
+      backgroundImage: `linear-gradient(105deg, transparent, ${colors.orange.__dark.__1})`,
+    },
   },
   crystalUi__light: {
-    // backgroundPosition: "100% 100%",
+    backgroundColor: "#FFFFFF",
+    '& [class^="fade_in_bg"]': {
+      backgroundImage: `linear-gradient(105deg, transparent, ${colors.purple.__light.__1})`,
+    },
+  },
+  fade_in_bg: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    zIndex: -100000000,
+    backgroundSize: "200% 200%",
   },
 });
 
@@ -83,14 +98,11 @@ export const ThemeContextProvider: React.FC<
   }, [screenHeightBreakPoint]);
 
   React.useEffect(() => {
-    const animationClass =
-      state.theme === "dark"
-        ? styles.__linear_background__start
-        : styles.__linear_background__end;
+    const animationClass = styles[`crystalUi__${state.theme}`];
     const oppositeClass =
       state.theme === "light"
-        ? styles.__linear_background__start
-        : styles.__linear_background__end;
+        ? styles.crystalUi__dark
+        : styles.crystalUi__light;
     document.body.classList.remove(oppositeClass);
     document.body.classList.add(animationClass);
   }, [state.theme]);
@@ -122,6 +134,7 @@ export const ThemeContextProvider: React.FC<
       {screenHeightBreakPoint && <ResponsiveStyles />}
       <ThemeContext.Provider value={{ state, dispatch }}>
         {children}
+        <div className={styles.fade_in_bg} />
       </ThemeContext.Provider>
     </>
   );
