@@ -2,9 +2,9 @@ import colors from "../../styles/colors";
 import { createDynamicStyles } from "../../utils/utils";
 
 export const buttonStyles = createDynamicStyles({
-  __button: ({ colorVariant }) => ({
-    padding: "0.7rem 1.2rem",
-    borderRadius: "1.5rem",
+  __button: ({ screenHeightBreakPoint, colorVariant }) => ({
+    padding: screenHeightBreakPoint ? "0.7rem 1.2rem" : "7px 12px",
+    borderRadius: screenHeightBreakPoint ? "1.5rem" : 15,
     border: `2px ${colors.purple.__dark.__disabled} solid`,
     boxShadow: `0 0 5px 0 ${colors.purple.__dark.__disabled}`,
     backgroundColor:
@@ -15,7 +15,7 @@ export const buttonStyles = createDynamicStyles({
     fontWeight: "bold",
     transition: "0.1s ease-in-out",
     "&:hover": {
-      borderRadius: "2rem",
+      borderRadius: screenHeightBreakPoint ? "2rem" : 20,
       cursor: "pointer",
       border: `3px ${
         colorVariant === "__dark"
@@ -34,7 +34,7 @@ export const buttonStyles = createDynamicStyles({
     },
     "&:active": {
       transition: "0s",
-      translate: "0.2rem 0.2rem",
+      translate: screenHeightBreakPoint ? "0.2rem 0.2rem" : "2px 2px",
       border: "2px solid transparent",
       backgroundColor:
         colorVariant === "__dark"
